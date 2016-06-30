@@ -16,7 +16,7 @@ describe("for witbot", function() {
             tester.setup.config.app({
                 name: 'witbot_test',
                 wit: {
-                    "token": "CS5JSQLP3OO5MRLTYX3EVBEIJYRY3YPS",
+                    "token": "token",
                     "confidence_threshold": 0.8,
                     "version": 20160626
                 }
@@ -26,8 +26,8 @@ describe("for witbot", function() {
             });
         });
 
-        describe("When the user starts a session", function() {
-            it("Should welcome user to service", function() {
+        describe("when the user starts a session", function() {
+            it("should welcome user to service", function() {
                 return tester
                       .start()
                       .check.interaction({
@@ -36,13 +36,17 @@ describe("for witbot", function() {
                       })
                       .run();
             });
-            it("Should return greeting", function() {
+            it("should return greeting", function() {
                 return tester
-                      .setup.user.state('states_converse')
+                      .setup.user.state('states_converse', {
+                          creator_opts: {
+                              session_id: 1
+                          }
+                      })
                       .input('Hi')
                       .check.interaction({
-                          state: 'states_converse',
-                          reply: /Hi there \:\)/
+                          state: 'states_reply',
+                          msg: /Hi there \:\)/
                       })
                       .run();
             });
@@ -68,14 +72,15 @@ describe("for witbot", function() {
             });
           });
 
-          describe("When user starts a session", function() {
-              it("Should fail because of empty config file", function() {
+          describe("when user starts a session", function() {
+              it("should fail because of empty config file", function() {
                   return tester
                       .start()
                       .check.interaction({
                         state: 'states_noconfig_error',
                         reply: /Config file empty\. Shutting down\./
                       })
+                      .check.reply.ends_session()
                       .run();
                 });
             });
@@ -101,14 +106,16 @@ describe("for witbot", function() {
                 });
             });
 
-            describe("When the user starts a session", function() {
-                it("Should end session with bad config error", function() {
+            describe("when the user starts a session", function() {
+                it("should end session with bad config error", function() {
                     return tester
                           .start()
+                          .input('Hi')
                           .check.interaction({
                               state: 'states_wit_error',
                               reply: /Error at Wit server\:/
                           })
+                          .check.reply.ends_session()
                           .run();
                 });
             });

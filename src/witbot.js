@@ -2,8 +2,8 @@ go.app = function() {
     var vumigo = require('vumigo_v02');
     var _ = require('lodash');
     var App = vumigo.App;
-    var Choice = vumigo.states.Choice;
-    var ChoiceState = vumigo.states.ChoiceState;
+    // var Choice = vumigo.states.Choice;
+    // var ChoiceState = vumigo.states.ChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
     var SESSION_ID = vumigo.utils.uuid();
@@ -26,7 +26,7 @@ go.app = function() {
             self.im.log("Entered `states_converse` with");
             self.im.log("opts.msg: " + opts.msg);
             return new FreeText(name, {
-                question: opts.msg === undefined ? "Welcome to MomSpeak" : opts.msg,
+                question: opts.msg === undefined ? "Welcome to MomSpeak!" : opts.msg,
                 next: function(response) {
                       self.im.log("session_id: " + opts.session_id);
                       return go.utils.converse(self.im, self.im.config.wit.token, opts.session_id, response)
@@ -38,7 +38,7 @@ go.app = function() {
                                 });
                       })
                       .then(function(wit_response) {
-                          if("error" in wit_response) {
+                          if("error" in wit_response.data) {
                               return {
                                       name: 'states_wit_error'
                                     };

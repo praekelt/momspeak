@@ -10,7 +10,7 @@ module.exports = function(grunt) {
                 app: {
                     witbot: 'src/witbot.js'
                 },
-                witbot: [
+                prd: [
                     'src/index.js',
                     'src/utils.js',
                     '<%= paths.src.app.witbot %>',
@@ -21,7 +21,8 @@ module.exports = function(grunt) {
                 ]
             },
             dest: {
-                witbot: 'go-app-witbot.js'
+                // witbot: 'go-app-witbot.js'
+                prd: 'go-app-witbot.js'
             },
             // test: {
             //     witbot: [
@@ -31,43 +32,68 @@ module.exports = function(grunt) {
             //         'test/witbot.test.js'
             //     ]
             // }
+            test: [
+                'test/setup.js',
+               'src/utils.js',
+                '<%= paths.src.app.witbot %>',
+                'test/**/*.test.js'
+            ]
         },
         jshint: {
             options: {jshintrc: '.jshintrc'},
             all: [
                 'Gruntfile.js',
-                '<%= paths.src.all %>'
+                '<%= paths.src.all %>',
+              //  '<%= paths.test %>'
             ]
         },
 
         watch: {
             src: {
-                files: ['<%= paths.src.all %>'],
-                tasks: ['build']
+                files: [
+                    '<%= paths.src.all %>',
+                    '<%= paths.test %>'
+                  ],
+                tasks: ['default'],
+                options: {
+                    atBegin: true
+                }
             }
         },
 
         concat: {
-            witbot: {
-                src: ['<%= paths.src.witbot %>'],
-                dest: '<%= paths.dest.witbot %>'
+            options: {
+                banner: [
+                      '// WARNING: This is a generated file.',
+                      '//          If you edit it you will be sad.',
+                      '//          Edit src/app.js instead.',
+                      '\n'
+                ].join('\n')
+            },
+            // witbot: {
+            //     src: ['<%= paths.src.witbot %>'],
+            //     dest: '<%= paths.dest.witbot %>'
+            // }
+            prd: {
+                src: ['<%= paths.src.prd %>'],
+                dest: '<%= paths.dest.prd %>'
             }
         },
-        // mochaTest: {
-        //     options: {
-        //         reporter: 'spec'
-        //     },
-        //     test_browser: {
-        //         src: ['<%= paths.test.witbot %>']
-        //     }
-        // }
+        mochaTest: {
+            test: {
+                src: ['<%= paths.test %>'],
+                options: {
+                  reporter: 'spec'
+                }
+            }
+        }
     });
 
-    // grunt.registerTask('test', [
-    //     'jshint',
-    //     'build',
-    //     'mochaTest'
-    // ]);
+    grunt.registerTask('test', [
+        'jshint',
+        'build',
+        'mochaTest'
+    ]);
 
     grunt.registerTask('build', [
         'concat'

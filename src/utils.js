@@ -1,5 +1,5 @@
 /* jshint -W041*/ // ignore == to compare null warning
-var _ = require('lodash');
+// var _ = require('lodash');
 var vumigo = require('vumigo_v02');
 var JsonApi = vumigo.http.api.JsonApi;
 
