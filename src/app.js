@@ -49,6 +49,10 @@ go.app = function() {
             if("error" in opts.data) {
                 return self.states.create('states_wit_error');
             }
+            if(opts.data.type === undefined) {
+                return self.states.create('states_no_data');
+            }
+
             return self.states.create('states_' + opts.data.type, {
                               data: opts.data,
                               msg: opts.msg
@@ -88,6 +92,13 @@ go.app = function() {
         self.states.add('states_wit_error', function(name) {
             return new EndState(name, {
                 text: "Error at Wit server. Shutting down.",
+                next: 'states_start'
+            });
+        });
+
+        self.states.add('states_no_data', function(name) {
+            return new EndState(name, {
+                text: "Wit returned no data. Shutting down.",
                 next: 'states_start'
             });
         });
