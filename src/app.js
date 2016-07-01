@@ -7,59 +7,76 @@ go.app = function() {
     var SESSION_ID = vumigo.utils.uuid();
     // TODO make menu state as start state with option to reset, resume, etc
 
-    var MomSpeak = App.extend(function(self){
+    var MomSpeak = App.extend(function(self) {
         App.call(self, 'states_start');
 
         self.states.add('states_start', function(name, opts) {
             return self.states.create('states_converse', {
-                        session_id: SESSION_ID
-                  }
-            );
+                msg: "Welcome to MomSpeak!"
+            });
         });
-        // converse
+
         self.states.add('states_converse', function(name, opts) {
             if(_.isEmpty(self.im.config.wit)) {
                 return self.states.create('states_noconfig_error');
             }
-            self.im.log("Entered `states_converse` with");
-            self.im.log("opts.msg: " + opts.msg);
             return new FreeText(name, {
-                question: opts.msg === undefined ? "Welcome to MomSpeak!" : opts.msg,
-                next: function(response) {
-                      self.im.log("session_id: " + opts.session_id);
-                      return go.utils.converse(self.im, self.im.config.wit.token, opts.session_id, response)
-                      .then(function(wit_response) {
-                          return self.im
-                                .log(wit_response)
-                                .then(function() {
-                                    return wit_response;
-                                });
-                      })
-                      .then(function(wit_response) {
-                          if("error" in wit_response.data) {
-                              return {
-                                      name: 'states_wit_error'
-                                    };
-                          }
-                          self.im.log("Message: " + wit_response.data.msg);
-                          self.im.log("Type of response: " + typeof wit_response.data.msg);
-                          opts.msg = wit_response.data.msg;
-                          self.im.log("opts.msg: " + opts.msg);
-                          self.im.log("Passing to `states_reply`...");
+                question: opts.msg,
+                next: function(user_input) {
                           return {
-                              name: 'states_reply',
+                              name: 'states_post',
                               creator_opts: {
-                                  msg: wit_response.data.msg,
-                                  session_id: opts.session_id
+                                  input: user_input
                               }
                           };
-
-                      });
-                  }
-
-
-              });
+                      }
+            });
         });
+
+        // takes user opts.input
+        self.states.add('states_post', function(name, opts) {
+            return self.states.create('states_log', {
+                      data: go.utils.converse(self.im, SESSION_ID, opts.input)
+                                    .then(function(wit_response) {
+                                        return wit_response.data;
+                                      }),
+                      msg: opts.msg
+            });
+        });
+
+        self.states.add('states_log', function(name, opts) {
+            self.im.log(opts.data);
+            if("error" in opts.data) {
+                return self.states.create('states_wit_error');
+            }
+            return self.states.create('states_' + opts.data.type, {
+                              data: opts.data,
+                              msg: opts.msg
+            });
+        });
+
+        // NOTE states_post.opts.input might have retained value, needs to be undefined
+        self.states.add('states_merge', function(name) {
+            return self.states.create('states_post');
+        });
+
+        self.states.add('states_msg', function(name, opts) {
+            return self.states.create('states_post', {
+                                msg: opts.data.msg
+            });
+        });
+
+        self.states.add('states_action', function(name, opts) {
+            // To be filled when specific actions are defined
+        });
+
+        self.states.add('states_stop', function(name, opts) {
+            return self.states.create('states_converse', {
+                                msg: opts.msg
+            });
+        });
+
+
 
         self.states.add('states_noconfig_error', function(name) {
             return new EndState(name, {
@@ -72,14 +89,6 @@ go.app = function() {
             return new EndState(name, {
                 text: "Error at Wit server. Shutting down.",
                 next: 'states_start'
-            });
-        });
-
-        self.states.add('states_reply', function(name, opts) {
-            self.im.log("In `states_reply`\n\topts.msg: " + opts.msg + "\nPassing to `states_converse`..");
-            return self.states.create('states_converse', {
-                    msg: opts.msg,
-                    session_id: opts.session_id
             });
         });
 
