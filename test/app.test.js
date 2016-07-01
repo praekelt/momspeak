@@ -2,7 +2,7 @@ var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures');
 var AppTester = vumigo.AppTester;
 
-describe("for witbot", function() {
+describe("for app", function() {
   //  With config, no config errors
     describe("MomSpeak with good config", function() {
         var app;
@@ -14,7 +14,7 @@ describe("for witbot", function() {
             tester = new AppTester(app);
 
             tester.setup.config.app({
-                name: 'witbot_test',
+                name: 'test_app',
                 wit: {
                     "token": "token",
                     "confidence_threshold": 0.8,
@@ -65,7 +65,7 @@ describe("for witbot", function() {
             tester = new AppTester(app);
 
             tester.setup.config.app({
-              name: 'witbot_test'
+              name: 'test_app'
             })
             .setup(function(api) {
               fixtures().forEach(api.http.fixtures.add);
@@ -94,7 +94,7 @@ describe("for witbot", function() {
                 tester = new AppTester(app);
 
                 tester.setup.config.app({
-                    name: 'witbot_test',
+                    name: 'test_app',
                     wit: {
                         "token": "",
                         "confidence_threshold": 0.8,

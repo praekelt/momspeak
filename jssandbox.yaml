@@ -9,7 +9,7 @@
 # application configuration
 
 worker_name: jsbox_application
-javascript_file: /app/go-app-witbot.js
+javascript_file: /app/go-app.js
 sandbox_id: sandbox1
 executable: /usr/bin/node
 
@@ -30,7 +30,7 @@ sandbox:
     redis_manager:
       key_prefix: "vumi.jsbox.kv"
       db: 1
-      host: 'redis.service.consul'
+      host: 'localhost'
       port: 6379
     keys_per_user: 550000
   http:

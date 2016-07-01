@@ -1,9 +1,5 @@
-/* jshint -W041*/ // ignore == to compare null warning
-// var _ = require('lodash');
 var vumigo = require('vumigo_v02');
 var JsonApi = vumigo.http.api.JsonApi;
-
-// var SESSION_ID = vumigo.utils.uuid();
 
 var converse_probe = function(im, token, SESSION_ID, content) {
     var http = new JsonApi(im, {
@@ -14,7 +10,7 @@ var converse_probe = function(im, token, SESSION_ID, content) {
         }
     });
     // FIXME add action support
-    return http.post('https://api.wit.ai/converse?', content == null ?
+    return http.post('https://api.wit.ai/converse?', content === null ?
                       {
                           params: {
                             v: im.config.wit.version, // write method that extracts version
