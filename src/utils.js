@@ -10,7 +10,7 @@ go.utils = function() {
           'Content-Type': ['application/json']
         }
       });
-      return http.post('https://api.wit.ai/converse?', content === null ?
+      return http.post('https://api.wit.ai/converse?', content === undefined ?
       {
         params: {
           v: im.config.wit.version, // write method that extracts version
@@ -24,10 +24,7 @@ go.utils = function() {
           q: content
         }
       }
-    )
-    .then(function(response) {
-      return response;
-    });
+    );
 
   };
 
