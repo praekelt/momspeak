@@ -4,11 +4,15 @@ go.app = function() {
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
-    var SESSION_ID = vumigo.utils.uuid();
     // TODO make menu state as start state with option to reset, resume, etc
 
     var MomSpeak = App.extend(function(self) {
         App.call(self, 'states_start');
+
+        self.init = function() {
+            if(!self.im.user.metadata.session_id)
+              self.im.user.metadata.session_id = vumigo.utils.uuid();
+        };
 
         self.states.add('states_start', function(name, opts) {
             return self.states.create('states_converse', {
@@ -35,7 +39,7 @@ go.app = function() {
 
         // takes user opts.input
         self.states.add('states_post', function(name, opts) {
-            return go.utils.converse(self.im, SESSION_ID, opts.input)
+            return go.utils.converse(self.im,self.im.user.metadata.session_id , opts.input)
                     .then(function(wit_response) {
                         return self.states.create('states_log', {
                             data: wit_response.data,

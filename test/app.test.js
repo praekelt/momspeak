@@ -21,6 +21,7 @@ describe("for app", function() {
                     "version": 20160626
                 }
             })
+            .setup.user.metadata({session_id: '1'})
             .setup(function(api) {
                 fixtures().forEach(api.http.fixtures.add);
             });
@@ -101,6 +102,7 @@ describe("for app", function() {
                         "version": 20160626
                     }
                 })
+                .setup.user.metadata({session_id: '1'})
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
                 });
