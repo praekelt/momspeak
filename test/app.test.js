@@ -27,15 +27,14 @@ describe("for app", function() {
           .setup.user.metadata({session_id: '1'});
     });
 
-  //  With config, no config errors
     describe("MomSpeak with good config", function() {
         beforeEach(function() {
             tester.setup.config.app({
                 name: 'test_app',
                 wit: {
-                    "token": "WULJPTJVF5XTDRVZ5QM4XRI37NVWVQAB",
+                    "token": "token",
                     "confidence_threshold": 0.8,
-                    "version": 20160626
+                    "version": '20160626'
                 }
             });
         });
@@ -68,8 +67,6 @@ describe("for app", function() {
                         .run();
             });
         });
-
-
     });
 
     describe("MomSpeak without config", function(){
@@ -122,5 +119,4 @@ describe("for app", function() {
             });
         });
     });
-
 });
