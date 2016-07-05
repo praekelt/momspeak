@@ -1,5 +1,5 @@
 {
-  "name": "go-app",
+  "name": "go-momspeak",
   "version": "0.0.1",
   "description": "Simple interface to MomConnect",
   "main": "lib/app.js",
