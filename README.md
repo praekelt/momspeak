@@ -16,7 +16,7 @@ With `twistd` and `vumi` installed, MomSpeak can be run from the commandline.
 2. In a new window, start a javascript sandbox application worker:
 	`twistd -n --pidfile=sandboxworker.pid vumi_worker --worker-class vxsandbox.worker.StandaloneJsFileSandbox --config=jssandbox.yaml`
 
-Note that the configuration file `jssandbox.yaml` is specified. Change the field `javascript_file` to match the path to `go-app.js` on your machine. Change `NODE_PATH` so that the paths to `node_modules` matches the path on your machine
+	Note that the configuration file `jssandbox.yaml` is specified. Change the field `javascript_file` to match the path to `go-app.js` on your machine. Change `NODE_PATH` so that the paths to `node_modules` match the path on your machine
 
 3. In a third window, start telnet:
 	`telnet localhost 9001`
