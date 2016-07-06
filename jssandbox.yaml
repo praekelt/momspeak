@@ -1,49 +1,25 @@
-# A jssandbox image that takes in javascript from a file
-#
-# Note:
-#   The application must be linked in as `/app/app.js`
-#   The application config must be linked in as `/app/config.json`
-#   Redis container must be linked as `redis`
-#   RabbitMQ container must be linked as `rabbitmq`
-
-# application configuration
-
-worker_name: jsbox_application
-javascript_file: /app/go-app.js
+transport_name: telnet
 sandbox_id: sandbox1
-executable: /usr/bin/node
+javascript_file: '/home/sanje/Praekelt/momspeak/momspeak/go-app.js'
 
-app_context: "{require: function(m) { if (['moment', 'url', 'querystring', 'crypto', 'lodash', 'q', 'jed', 'vumigo_v01', 'vumigo_v02', 'go-jsbox-location', 'go-jsbox-metrics-helper', 'go-jsbox-ona', 'go-jsbox-xform'].indexOf(m) >= 0) return require(m); return null; }, Buffer: Buffer}"
+env:
+  NODE_PATH: "/usr/lib/node_modules:/usr/local/lib/node_modules:/home/sanje/Praekelt/momspeak/momspeak/node_modules"
+
+app_context: "{require: function(m) { if (['moment', 'url', 'querystring', 'crypto', 'lodash', 'q', 'jed', 'libxmljs', 'zlib', 'vumigo_v01', 'vumigo_v02', 'go-jsbox-location', 'go-jsbox-metrics-helper', 'go-jsbox-ona', 'go-jsbox-xform'].indexOf(m) >= 0) return require(m); return null; }, Buffer: Buffer}"
+
+sandbox:
+  http:
+    cls: vxsandbox.HttpClientResource
+  kv:
+    cls: vxsandbox.RedisResource
+  outbound:
+    cls: vxsandbox.OutboundResource
+  config:
+    cls: vxsandbox.resources.config.FileConfigResource
+    keys:
+      config: config.json
 
 rlimits:
   RLIMIT_DATA: [67108864, 67108864] # 64 MB
   RLIMIT_STACK: [2097152, 2097152] # 2 MB
   RLIMIT_AS: [268435456, 268435456] # 256 MB
-
-sandbox:
-  config:
-    cls: vxsandbox.resources.config.FileConfigResource
-    keys:
-      config: config.json
-  kv:
-    cls: vxsandbox.resources.kv.RedisResource
-    redis_manager:
-      key_prefix: "vumi.jsbox.kv"
-      db: 1
-      host: 'localhost'
-      port: 6379
-    keys_per_user: 550000
-  http:
-    cls: vxsandbox.resources.http.HttpClientResource
-  outbound:
-    cls: vxsandbox.resources.outbound.OutboundResource
-    allowed_helper_metadata:
-      - messenger
-
-# middleware configuration
-
-middleware:
-  - logging_mw: vumi.middleware.logging.LoggingMiddleware
-
-logging_mw:
-  log_level: debug

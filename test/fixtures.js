@@ -19,7 +19,6 @@ module.exports = function() {
         "response": {
             "code": "200",
             "data": {
-                "confidence": 0.2800485757226742,
                 "type": "msg",
                 "msg": "Hi there :)"
             }
@@ -42,7 +41,6 @@ module.exports = function() {
         "responses": [{
             "code": "200",
             "data": {
-                "confidence": 0.2800485757226742,
                 "type": "msg",
                 "msg": "Hi there :)"
             }
