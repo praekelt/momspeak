@@ -22,3 +22,5 @@ With `twistd` and `vumi` installed, MomSpeak can be run from the commandline.
 	`telnet localhost 9001`
 
 You can now talk to the app!
+
+<!-- TODO Write dockerfile to manage transport and application worker setup and only expose telnet port to user. Update this readme once that is done -->
