@@ -87,3 +87,8 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+npm-debug.log
+node_modules
+
+*.pid

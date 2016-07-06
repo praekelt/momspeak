@@ -1,0 +1,13 @@
+{
+    "name": "momspeak",
+    "endpoints": {
+        "sms": {
+            "delivery_class": "sms"
+        }
+    },
+    "wit": {
+        "token": "CRPURQZRYEHGJGK6NSYRN2O67FOWSIKD",
+        "confidence_threshold": 0.8,
+        "version": 20160626
+    }
+}
