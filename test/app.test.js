@@ -18,10 +18,9 @@ describe("for app", function() {
 
         fixture_set.matcher = function(req, fix) {
           return fixture_set.matchers.params(req, fix)
-              && fixture_set.matchers.body(req, fix)
-              && _.isEqual(req.headers, fix.request.headers);
+            && fixture_set.matchers.body(req, fix)
+            && _.isEqual(req.headers, fix.request.headers);
         };
-
         fixtures().forEach(fixture_set.add);
       })
       .setup.user.metadata({session_id: '1'});
@@ -32,9 +31,9 @@ describe("for app", function() {
       tester.setup.config.app({
         name: 'test_app',
         wit: {
-            "token": "token",
-            "confidence_threshold": 0.8,
-            "version": '20160626'
+          "token": "token",
+          "confidence_threshold": 0.8,
+          "version": '20160626'
         }
       });
     });
@@ -42,29 +41,29 @@ describe("for app", function() {
     describe("when the user starts a session", function() {
       it("should welcome user to service", function() {
         return tester
-              .start()
-              .check.interaction({
-                state: 'states_converse',
-                reply: /Welcome to MomSpeak\!/
-              })
-              .run();
+          .start()
+          .check.interaction({
+            state: 'states_converse',
+            reply: /Welcome to MomSpeak\!/
+          })
+          .run();
       });
     });
-  describe("when the user greets the system", function() {
+    describe("when the user greets the system", function() {
       it("should return greeting", function() {
         return tester
-              .setup.user.state('states_converse', {
-                creator_opts: {
-                  session_id: 1,
-                  msg: "Welcome to MomSpeak!"
-                }
-              })
-              .input("Hi")
-              .check.interaction({
-                state: 'states_converse',
-                reply: /Hi there/
-              })
-              .run();
+          .setup.user.state('states_converse', {
+            creator_opts: {
+              session_id: 1,
+              msg: "Welcome to MomSpeak!"
+            }
+          })
+          .input("Hi")
+          .check.interaction({
+            state: 'states_converse',
+            reply: /Hi there/
+          })
+          .run();
       });
     });
   });
@@ -74,21 +73,22 @@ describe("for app", function() {
       tester.setup.config.app({
         name: 'test_app'
       });
-    });
+  });
 
-    describe("when user starts a session", function() {
-      it("should fail because of empty config file", function() {
-        return tester
-            .start()
-            .check.interaction({
-              state: 'states_noconfig_error',
-              reply: /Something went wrong/
-            })
-            .check.reply.ends_session()
-            .run();
-        });
+  describe("when user starts a session", function() {
+    it("should fail because of empty config file", function() {
+      return tester
+        .start()
+        .check.interaction({
+          state: 'states_noconfig_error',
+          reply: /Something went wrong/
+        })
+        .check.reply.ends_session()
+        .run();
       });
     });
+  });
+
   describe("MomSpeak with bad config", function() {
     beforeEach(function() {
       tester.setup.config.app({
@@ -101,22 +101,22 @@ describe("for app", function() {
         });
     });
 
-      describe("when the user starts a session", function() {
-        it("should end session with bad config error", function() {
-          return tester
-            .setup.user.state('states_converse', {
-              creator_opts: {
-                session_id: 1,
-              }
-            })
-            .input('Hi')
-            .check.interaction({
-              state: 'states_wit_error',
-              reply: /Something went wrong/
-            })
-            .check.reply.ends_session()
-            .run();
-        });
+    describe("when the user starts a session", function() {
+      it("should end session with bad config error", function() {
+        return tester
+          .setup.user.state('states_converse', {
+            creator_opts: {
+              session_id: 1,
+            }
+          })
+          .input('Hi')
+          .check.interaction({
+            state: 'states_wit_error',
+            reply: /Something went wrong/
+          })
+          .check.reply.ends_session()
+          .run();
       });
+    });
   });
 });
