@@ -6,7 +6,7 @@
         }
     },
     "wit": {
-        "token": "",
+        "token": "your_token",
         "confidence_threshold": 0.8,
         "version": 20160626
     }
