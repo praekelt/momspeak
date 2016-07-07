@@ -46,16 +46,13 @@ rlimits:
 EOM
 cat jssandbox.yaml > /dev/null
 
-
-# twistd \
-#   -n --pidfile=transportworker.pid vumi_worker \
-#   --worker-class vumi.transports.telnet.TelnetServerTransport \
-#   --set-option=transport_name:telnet \
-#   --set-option=telnet_port:9001 &
+twistd \
+  -n --pidfile=transportworker.pid vumi_worker \
+  --worker-class vumi.transports.telnet.TelnetServerTransport \
+  --set-option=transport_name:telnet \
+  --set-option=telnet_port:9001 &
 
 twistd \
   -n --pidfile=sandboxworker.pid vumi_worker \
   --worker-class vxsandbox.worker.StandaloneJsFileSandbox \
-  --config=jssandbox.yaml
-
-  # telnet localhost 9001
+  --config=jssandbox.yaml &
