@@ -3,11 +3,7 @@
 cat > ./config.json <<-EOM
 {
   "name": "momspeak",
-    "endpoints": {
-        "sms": {
-            "delivery_class": "sms"
-        }
-    },
+    "endpoints": {},
     "wit": {
         "token": "${CLIENT_TOKEN}",
         "confidence_threshold": 0.8,
