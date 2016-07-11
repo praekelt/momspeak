@@ -1,10 +1,6 @@
 {
     "name": "momspeak",
-    "endpoints": {
-        "sms": {
-            "delivery_class": "sms"
-        }
-    },
+    "endpoints": {},
     "wit": {
         "token": "your_token",
         "confidence_threshold": 0.8,

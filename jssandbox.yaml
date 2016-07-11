@@ -5,7 +5,7 @@ javascript_file: '/home/sanje/Praekelt/momspeak/momspeak/go-app.js'
 env:
   NODE_PATH: "/usr/lib/node_modules:/usr/local/lib/node_modules:/home/sanje/Praekelt/momspeak/momspeak/node_modules"
 
-app_context: "{require: function(m) { if (['moment', 'url', 'querystring', 'crypto', 'lodash', 'q', 'jed', 'libxmljs', 'zlib', 'vumigo_v01', 'vumigo_v02', 'go-jsbox-location', 'go-jsbox-metrics-helper', 'go-jsbox-ona', 'go-jsbox-xform'].indexOf(m) >= 0) return require(m); return null; }, Buffer: Buffer}"
+app_context: "{require: function(m) { if (['lodash','vumigo_v02'].indexOf(m) >= 0) return require(m); return null; }, Buffer: Buffer}"
 
 sandbox:
   http:
