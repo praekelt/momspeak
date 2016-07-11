@@ -9,7 +9,7 @@ cat > ./config.json <<-EOM
         }
     },
     "wit": {
-        "token": "$(eval echo \$\{CLIENT_TOKEN\})",
+        "token": "${CLIENT_TOKEN}",
         "confidence_threshold": 0.8,
         "version": 20160626
     }
